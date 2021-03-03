@@ -1,41 +1,44 @@
 import lab01.example.model.AccountHolder;
-import lab01.example.model.SimpleBankAccount;
+import lab01.example.model.SimpleBankAccountWithAtm;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import org.junit.jupiter.api.*;
-
-/**
- * The test suite for testing the SimpleBankAccount implementation
- */
-class SimpleBankAccountTest extends BaseBankAccountTest {
+class SimpleBankAccountWithAtmTest extends BaseBankAccountTest {
 
     @BeforeEach
     void beforeEach(){
         super.accountHolder = new AccountHolder("Mario", "Rossi", 1);
-        super.bankAccount = new SimpleBankAccount(accountHolder, 0);
+        super.bankAccount = new SimpleBankAccountWithAtm(accountHolder, 0);
+        super.fee = 1.0f;
     }
 
     @Test
+    @Override
     public void testInitialBalance() {
         super.testInitialBalance();
     }
 
     @Test
+    @Override
     public void testDeposit() {
         super.testDeposit();
     }
 
     @Test
-    public void testWrongDeposit() {
-        super.testWrongDeposit();
-    }
-
-    @Test
+    @Override
     public void testWithdraw() {
         super.testWithdraw();
     }
 
     @Test
+    @Override
     public void testWrongWithdraw() {
         super.testWrongWithdraw();
+    }
+
+    @Test
+    @Override
+    public void testWrongDeposit() {
+        super.testWrongDeposit();
     }
 }
