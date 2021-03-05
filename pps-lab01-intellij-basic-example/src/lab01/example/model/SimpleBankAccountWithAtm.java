@@ -1,19 +1,19 @@
 package lab01.example.model;
 
-public class SimpleBankAccountWithAtm extends SimpleBankAccount {
+public class SimpleBankAccountWithAtm extends AbstractBankAccount {
     private static final double FEE = 1.0f;
 
-    public SimpleBankAccountWithAtm(AccountHolder holder, double balance) {
-        super(holder, balance);
+    public SimpleBankAccountWithAtm(AccountHolder accountHolder, double initialBalance) {
+        super(accountHolder, initialBalance);
     }
 
     @Override
-    public void deposit(final int usrID, final double amount) {
-        super.deposit(usrID, amount - FEE);
+    public double getFeesAmount() {
+        return FEE;
     }
 
     @Override
-    public void withdraw(final int usrID, final double amount) {
-        super.withdraw(usrID, amount + FEE);
+    public boolean isWithdrawAllowed(double amount) {
+        return this.getBalance() >= amount + FEE;
     }
 }

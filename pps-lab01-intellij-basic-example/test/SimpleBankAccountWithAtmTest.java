@@ -1,44 +1,28 @@
 import lab01.example.model.AccountHolder;
+import lab01.example.model.BankAccount;
 import lab01.example.model.SimpleBankAccountWithAtm;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class SimpleBankAccountWithAtmTest extends BaseBankAccountTest {
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-    @BeforeEach
-    void beforeEach(){
-        super.accountHolder = new AccountHolder("Mario", "Rossi", 1);
-        super.bankAccount = new SimpleBankAccountWithAtm(accountHolder, 0);
-        super.fee = 1.0f;
-    }
+class SimpleBankAccountWithAtmTest extends AbstractBankAccountTest {
+    private final static double FEE = 1;
+    private static final double MAX_WITHDRAW_ALLOWED = 100;
 
     @Test
-    @Override
-    public void testInitialBalance() {
-        super.testInitialBalance();
+    public void testWithdrawFeeOutOfBalance() {
+        this.bankAccount.withdraw(this.accountHolder.getId(), MAX_WITHDRAW_ALLOWED);
+        // No withdraw should be done (no available money)
+        assertEquals(MAX_WITHDRAW_ALLOWED, this.bankAccount.getBalance());
     }
 
-    @Test
     @Override
-    public void testDeposit() {
-        super.testDeposit();
+    protected BankAccount getBankAccount(AccountHolder accountHolder, double initialBalance) {
+        return new SimpleBankAccountWithAtm(accountHolder, initialBalance);
     }
 
-    @Test
     @Override
-    public void testWithdraw() {
-        super.testWithdraw();
-    }
-
-    @Test
-    @Override
-    public void testWrongWithdraw() {
-        super.testWrongWithdraw();
-    }
-
-    @Test
-    @Override
-    public void testWrongDeposit() {
-        super.testWrongDeposit();
+    protected double getExpectedBalanceAfterOperation(double initialBalance, double amount) {
+        return initialBalance + amount - FEE;
     }
 }
