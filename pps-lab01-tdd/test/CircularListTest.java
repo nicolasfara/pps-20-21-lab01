@@ -1,7 +1,6 @@
 import lab01.tdd.CircularList;
 import lab01.tdd.CircularListImpl;
-import lab01.tdd.SelectStrategyFactory;
-import lab01.tdd.SelectionType;
+import lab01.tdd.StrategyFactoryImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class CircularListTest {
     private CircularList list;
-    private final SelectStrategyFactory factory = SelectStrategyFactory.getFactory();
+    private final StrategyFactoryImpl factory = new StrategyFactoryImpl();
 
     @BeforeEach
     public void beforeEach() {
@@ -99,13 +98,13 @@ public class CircularListTest {
     public void evenStrategy() {
         IntStream.range(0, 6).forEach(list::add);
         list.next();
-        list.next(factory.getStrategy(SelectionType.EVEN)).ifPresentOrElse(i -> assertEquals(2, i), () -> fail("Test fail"));
+        list.next(factory.getEvenStrategy()).ifPresentOrElse(i -> assertEquals(2, i), () -> fail("Test fail"));
     }
 
     @Test
     public void equalStrategy() {
         IntStream.range(0, 6).forEach(list::add);
-        list.next(factory.getStrategyWithArgs(SelectionType.EQUALS, 5)).ifPresentOrElse(i -> assertEquals(5, i), () -> fail("Test fail"));
+        list.next(factory.getEqualStrategy(5)).ifPresentOrElse(i -> assertEquals(5, i), () -> fail("Test fail"));
     }
 
     @Test
@@ -114,12 +113,12 @@ public class CircularListTest {
         list.next();
         list.next();
         list.next();
-        list.next(factory.getStrategyWithArgs(SelectionType.MULTIPLE_OF, 2)).ifPresentOrElse(i -> assertEquals(4, i), () -> fail("Test Fail"));
+        list.next(factory.getMultipleOfStrategy(2)).ifPresentOrElse(i -> assertEquals(4, i), () -> fail("Test Fail"));
     }
 
     @Test
     public void noMatchingStrategy() {
         IntStream.range(0, 6).forEach(list::add);
-        list.next(factory.getStrategyWithArgs(SelectionType.EQUALS, 15)).ifPresentOrElse(i -> fail("No match element should found"), () -> { });
+        list.next(factory.getEqualStrategy(15)).ifPresentOrElse(i -> fail("No match element should found"), () -> { });
     }
 }
